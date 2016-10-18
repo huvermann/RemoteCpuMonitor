@@ -154,15 +154,24 @@ namespace RemoteCpuMonitor.SSHHelper
 
         private void parseLine(string line)
         {
-            var data = ArmbianMonitorResult.ParseMonitorString(line);
-            if (data != null)
+            var data1 = CpuTempMonitorMessage.ParseMonitorString(line);
+            if (data1 != null)
             {
-                // Publish data
-                //Console.WriteLine(string.Format("Time: {0}, Speed: {1}, Temperature: {2}", data.Time, data.CpuSpeed, data.Temperature));
-                this.eventAggregator.GetEvent<ArmbianMontorMessageEvent>().Publish(data);
-            } else
+                eventAggregator.GetEvent<CpuTempMonitorMessageEvent>().Publish(data1);
+            }
+            else
             {
-                eventAggregator.GetEvent<SshResponseMessageEvent>().Publish(new SshResponse() { MessageText = line, Number = 0 });
+
+                var data = ArmbianMonitorResult.ParseMonitorString(line);
+                if (data != null)
+                {
+                    // Publish data
+                    this.eventAggregator.GetEvent<ArmbianMontorMessageEvent>().Publish(data);
+                }
+                else
+                {
+                    eventAggregator.GetEvent<SshResponseMessageEvent>().Publish(new SshResponse() { MessageText = line, Number = 0 });
+                }
             }
 
         }

@@ -32,25 +32,41 @@ namespace RemoteCpuMonitor.ViewModels
 
             eventAggregator.GetEvent<SshResponseMessageEvent>().Subscribe(onReceiveSshResponse);
             eventAggregator.GetEvent<ArmbianMontorMessageEvent>().Subscribe(onReceiveArmbianMonitorMessage);
+            eventAggregator.GetEvent<CpuTempMonitorMessageEvent>().Subscribe(onReceiveCpuTemperatureMonitorMessage);
             ConfigureConnectionCommand = new DelegateCommand(ConfigureConnection);
             ExecuteSSHCommand = new DelegateCommand(ExecuteSsh);
             StartMonitorCommand = new DelegateCommand(StartMonitor);
             StopMonitorCommand = new DelegateCommand(StopMonitor);
-            ClearOutputCommand = new DelegateCommand(() => { this.SshResponse = String.Empty; });
+            ClearOutputCommand = new DelegateCommand(() => {
+                this.SshResponse = String.Empty;
+                this._monitorDataEntries.Clear();
+            });
             SetCredentialsCommand = new DelegateCommand(SetCredentials);
             TestButtonCommand = new DelegateCommand(TestButtonMethod);
             this.GetServerConnectionRequest = new InteractionRequest<ServerConnectionNotification>();
         }
 
+        
+
         private void TestButtonMethod()
         {
-            string zeit = DateTime.Now.ToLongTimeString();
-            HeatingChartData entry = new HeatingChartData() { Time = DateTime.ParseExact(zeit, "HH:mm:ss", CultureInfo.InvariantCulture), Value = double.Parse(this._sshCommandLine) };
-            this.MonitorDataEntries.Add(entry);
-            //OnPropertyChanged("MonitorDataEntries");
+
         }
 
         #region MessageEventHandler
+        private void onReceiveCpuTemperatureMonitorMessage(CpuTempMonitorMessage data)
+        {
+            DispatcherHelper.Invoke(() =>
+            {
+                HeatingChartData entry = new HeatingChartData() { Time = data.Time, Value = data.Temperature1 };
+                _monitorDataEntries.Add(entry);
+                this.SshResponse += string.Format("Daten hinzugefügt...{0}; {1}\n", data.Time, data.Temperature1);
+                scrollToend();
+
+
+            });
+        }
+
         private void onReceiveArmbianMonitorMessage(ArmbianMonitorResult data)
         {
 
@@ -131,7 +147,8 @@ namespace RemoteCpuMonitor.ViewModels
 
         private void StartMonitor()
         {
-            this._sudoHelper.StartSession(this._connectionData, "sudo armbianmonitor -m");
+            // this._sudoHelper.StartSession(this._connectionData, "sudo armbianmonitor -m");
+            this._sudoHelper.StartSession(this._connectionData, "sudo coretempmon");
         }
 
         private void ExecuteSsh()
