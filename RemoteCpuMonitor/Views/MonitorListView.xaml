@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="RemoteCpuMonitor.Views.MonitorListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:designtime="clr-namespace:RemoteCpuMonitor.DesignTimeViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance designtime:MonitorListViewModel, IsDesignTimeCreatable=True}"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <ListView Margin="4" ItemsSource="{Binding HostList}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <TextBlock Text="Hostname" />
+                        <TextBlock Text="{Binding Hostname}" />
+                        <TextBlock Text="Username" />
+                        <TextBlock Text="{Binding Username}" />
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

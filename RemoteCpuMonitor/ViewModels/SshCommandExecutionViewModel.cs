@@ -2,6 +2,7 @@
 using Prism.Events;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
+using RemoteCpuMonitor.Configuration;
 using RemoteCpuMonitor.Events;
 using RemoteCpuMonitor.Models;
 using RemoteCpuMonitor.Notifications;
@@ -19,10 +20,12 @@ namespace RemoteCpuMonitor.ViewModels
     {
         private SudoHelper _sudoHelper;
         private ConnectionData _connectionData;
+        private ICpuMonitorConfigSection _configuration;
 
-        public SshCommandExecutionViewModel(IEventAggregator eventAggregator, SudoHelper sudoHelper)
+        public SshCommandExecutionViewModel(IEventAggregator eventAggregator, SudoHelper sudoHelper, ICpuMonitorConfigSection configuration)
         {
             this._sudoHelper = sudoHelper;
+            this._configuration = configuration;
 
             this._monitorDataEntries = new ObservableCollection<HeatingChartData>();
             //this.MonitorDataEntries.Add(new HeatingChartData() { Time = DateTime.ParseExact("17:06:00", "HH:mm:ss", CultureInfo.InvariantCulture), Value = 34 });
