@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Microsoft.Practices.ServiceLocation;
+using Prism.Commands;
 using Prism.Mvvm;
 using RemoteCpuMonitor.Configuration;
 using RemoteCpuMonitor.Models;
@@ -10,9 +11,9 @@ namespace RemoteCpuMonitor.ViewModels
 {
     public class MonitorListViewModel : BindableBase
     {
-        public MonitorListViewModel(ICpuMonitorConfigSection configuration)
+        public MonitorListViewModel(IServiceLocator serviceLocator)
         {
-            this.HostList = new ObservableHostList(configuration);
+            this.HostList = (ObservableHostList)serviceLocator.GetInstance(typeof(ObservableHostList));
         }
 
         public ObservableHostList HostList { get; set; }

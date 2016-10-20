@@ -126,13 +126,21 @@
     <Compile Include="Notifications\ServerConnectionNotification.cs" />
     <Compile Include="SSHHelper\ArmbianMonitorResult.cs" />
     <Compile Include="SSHHelper\CpuTempMonitorMessage.cs" />
+    <Compile Include="SSHHelper\ISudoHelper.cs" />
     <Compile Include="SSHHelper\SshResponse.cs" />
     <Compile Include="SSHHelper\SudoHelper.cs" />
     <Compile Include="Utils\DispatcherHelper.cs" />
     <Compile Include="ViewModels\MonitorListViewModel.cs" />
     <Compile Include="ViewModels\SshCommandExecutionViewModel.cs" />
+    <Compile Include="ViewModels\SshHostViewModel.cs" />
+    <Compile Include="Views\MonitorListItemView.xaml.cs">
+      <DependentUpon>MonitorListItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MonitorListView.xaml.cs">
       <DependentUpon>MonitorListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyListControlView.xaml.cs">
+      <DependentUpon>MyListControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SshCommandExecutionView.xaml.cs">
       <DependentUpon>SshCommandExecutionView.xaml</DependentUpon>
@@ -194,7 +202,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\MonitorListItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MonitorListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyListControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

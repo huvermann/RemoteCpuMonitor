@@ -4,22 +4,25 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:designtime="clr-namespace:RemoteCpuMonitor.DesignTimeViewModels"
+             xmlns:vm="clr-namespace:RemoteCpuMonitor.ViewModels"
+             xmlns:views="clr-namespace:RemoteCpuMonitor.Views"
+             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance designtime:MonitorListViewModel, IsDesignTimeCreatable=True}"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             
+             >
     <Grid>
-        <ListView Margin="4" ItemsSource="{Binding HostList}">
+        <StackPanel HorizontalAlignment="Stretch">
+            <ListView Margin="4" ItemsSource="{Binding HostList}" HorizontalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <WrapPanel>
-                        <TextBlock Text="Hostname" />
-                        <TextBlock Text="{Binding Hostname}" />
-                        <TextBlock Text="Username" />
-                        <TextBlock Text="{Binding Username}" />
-                    </WrapPanel>
-                </DataTemplate>
+                        <StackPanel>
+                            <TextBox Text="{Binding Hostname}" />
+                            <views:MyListControlView HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+            
+        </StackPanel>
     </Grid>
 </UserControl>

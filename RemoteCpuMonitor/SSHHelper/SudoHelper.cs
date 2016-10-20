@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace RemoteCpuMonitor.SSHHelper
 {
-    public class SudoHelper
+    public class SudoHelper : ISudoHelper
     {
         private IEventAggregator eventAggregator;
         private Thread _SshClientThread;

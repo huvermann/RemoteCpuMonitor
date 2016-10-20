@@ -2,6 +2,7 @@
 using Prism.Modularity;
 using Prism.Unity;
 using RemoteCpuMonitor.Configuration;
+using RemoteCpuMonitor.SSHHelper;
 using System.Configuration;
 using System.Windows;
 
@@ -29,6 +30,7 @@ namespace RemoteCpuMonitor
         {
             base.ConfigureContainer();
             Container.RegisterInstance<ICpuMonitorConfigSection>(CpuMonitorConfigSection.Create());
+            Container.RegisterType<ISudoHelper, SudoHelper>(); 
 
         }
     }
