@@ -8,21 +8,32 @@
              xmlns:views="clr-namespace:RemoteCpuMonitor.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             
              >
-    <Grid>
-        <StackPanel HorizontalAlignment="Stretch">
-            <ListView Margin="4" ItemsSource="{Binding HostList}" HorizontalAlignment="Stretch">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                        <StackPanel>
-                            <TextBox Text="{Binding Hostname}" />
-                            <views:MyListControlView HorizontalAlignment="Stretch" />
-                        </StackPanel>
+
+    <UserControl.Resources>
+        <Style x:Key="CommandButtonStype" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Stretch" Grid.RowSpan="2">
+            <ListView Margin="4" ItemsSource="{Binding HostList}" HorizontalAlignment="Stretch" Background="Black">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <views:MonitorListItemView HorizontalAlignment="Stretch" />
                     </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-            
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Content="Connect all" Style="{StaticResource CommandButtonStype}"  />
+            <Button Content="Disconnect" />
+            <Button Content="Heatup" />
         </StackPanel>
     </Grid>
 </UserControl>

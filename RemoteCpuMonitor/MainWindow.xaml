@@ -7,8 +7,8 @@
         xmlns:views="clr-namespace:RemoteCpuMonitor.Views"
         xmlns:local="clr-namespace:RemoteCpuMonitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="750">
+        Title="MainWindow" Height="900" Width="750" Background="BurlyWood">
     <Grid>
-        <views:MonitorListView />
+        <views:MonitorListView HorizontalAlignment="Stretch" />
     </Grid>
 </Window>

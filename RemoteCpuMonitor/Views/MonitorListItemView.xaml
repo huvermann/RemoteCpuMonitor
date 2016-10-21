@@ -1,14 +1,119 @@
 ﻿<UserControl x:Class="RemoteCpuMonitor.Views.MonitorListItemView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"             
-             prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="Das MonitorListItem" />
-            <TextBlock Text="{Binding HostName}" />
-            <TextBlock x:Name="MyLabel" Text="{Binding HeaderText, Mode=OneWay}" />
-        </StackPanel>
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:toolkit="clr-namespace:Toolkit.WPF.Controls;assembly=Toolkit.WPF"
+             xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:visualisation="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             Background="DarkGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+             >
+    <UserControl.Resources>
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="Aquamarine" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style x:Key="ChartLineStyle" TargetType="{x:Type chartingToolkit:LineDataPoint}">
+            <Setter Property="Background" Value="Red" />
+        </Style>
+        <Style x:Key="CpuLoad1" TargetType="{x:Type chartingToolkit:LineDataPoint}">
+            <Setter Property="Background" Value="DarkGreen" />
+        </Style>
+        <Style x:Key="CpuLoad2" TargetType="{x:Type chartingToolkit:LineDataPoint}">
+            <Setter Property="Background" Value="Yellow" />
+        </Style>
+        <Style x:Key="CpuLoad3" TargetType="{x:Type chartingToolkit:LineDataPoint}">
+            <Setter Property="Background" Value="Orange" />
+        </Style>
+        <Style x:Key="CpuLoad4" TargetType="{x:Type chartingToolkit:LineDataPoint}">
+            <Setter Property="Background" Value="BlueViolet" />
+        </Style>
+        <!--<Style TargetType="visualisation:Legend">
+            <Setter Property="Background" Value="Black" />
+        </Style>-->
+    </UserControl.Resources>
+    <Grid  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Style="{StaticResource HeaderStyle}" Text="CPU Status: Hostname" Grid.ColumnSpan="4" />
+        <TextBlock Text="No." Grid.Row="1" />
+        <TextBlock Text="Temperature" Grid.Row="1" Grid.Column="1" />
+        <TextBlock Text="Load" Grid.Row="1" Grid.Column="2" />
+        <TextBlock Text="CPU1" Grid.Row="2" />
+        <TextBlock Text="t1" Grid.Row="2" Grid.Column="1" />
+        <TextBlock Text="Lo1" Grid.Row="2" Grid.Column="2" />
+        <TextBlock Text="CPU2" Grid.Row="3" />
+        <TextBlock Text="t2" Grid.Row="3" Grid.Column="1" />
+        <TextBlock Text="lo2" Grid.Row="3" Grid.Column="2" />
+
+        <TextBlock Text="CPU3" Grid.Row="4" />
+        <TextBlock Text="t3" Grid.Row="4" Grid.Column="1" />
+        <TextBlock Text="lo3" Grid.Row="4" Grid.Column="2" />
+
+        <TextBlock Text="CPU4" Grid.Row="5" />
+        <TextBlock Text="t4" Grid.Row="5" Grid.Column="1" />
+        <TextBlock Text="lo4" Grid.Row="5" Grid.Column="2" />
+
+        <chartingToolkit:Chart Name="CPULoad"  Height="150" Width="500"  Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0" Padding="0" >
+            <chartingToolkit:Chart.LegendStyle>
+                <Style TargetType="visualisation:Legend">
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Height" Value="100" />
+                    <!--<Setter Property="Width" Value="0" />-->
+                </Style>
+            </chartingToolkit:Chart.LegendStyle>
+            <chartingToolkit:Chart.TitleStyle>
+                <Style TargetType="visualisation:Title">
+                    <Setter Property="Height" Value="0" />
+                    <Setter Property="Width" Value="0" />
+                </Style>
+  
+            </chartingToolkit:Chart.TitleStyle>
+            <!--<chartingToolkit:Chart.ChartAreaStyle>
+
+            </chartingToolkit:Chart.ChartAreaStyle>-->
+            <chartingToolkit:Chart.Series >
+                <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad1}" Title="CPU1" ItemsSource="{Binding Cpu1LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+                <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad2}" Title="CPU2" ItemsSource="{Binding Cpu2LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+                <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad3}" Title="CPU3" ItemsSource="{Binding Cpu3LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+                <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad4}" Title="CPU4" ItemsSource="{Binding Cpu4LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+            </chartingToolkit:Chart.Series>
+        </chartingToolkit:Chart>
+
+        <chartingToolkit:Chart Name="Temperature" Title="Temperature"  Height="150"  Grid.Row="7" Grid.ColumnSpan="4"  Padding="0"   >
+            <chartingToolkit:Chart.TitleStyle >
+                <Style TargetType="visualisation:Title">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Padding" Value="0" />
+                    <!--<Setter Property="Height" Value="0" />-->
+                    <Setter Property="Foreground" Value="Red" />
+                </Style>
+            </chartingToolkit:Chart.TitleStyle>
+            <chartingToolkit:Chart.Series >
+                <chartingToolkit:LineSeries DataPointStyle="{StaticResource ChartLineStyle}" Title="°C" ItemsSource="{Binding TemperatureData}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+
+            </chartingToolkit:Chart.Series>
+        </chartingToolkit:Chart>
 
     </Grid>
 </UserControl>
