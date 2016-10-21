@@ -5,9 +5,13 @@
              xmlns:toolkit="clr-namespace:Toolkit.WPF.Controls;assembly=Toolkit.WPF"
              xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:visualisation="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+              xmlns:converter="clr-namespace:RemoteCpuMonitor.Converter"
              Background="DarkGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
              >
     <UserControl.Resources>
+        <converter:FrequencyStringConverter x:Key="FrequencyStringConverter" />
+        <converter:PercentageStringConverter x:Key="PercentageStringConverter" />
+        <converter:TemperatureStringConverter x:Key="TemperatureStringConverter" />
         <Style x:Key="HeaderStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="Foreground" Value="Aquamarine" />
@@ -56,22 +60,24 @@
         </Grid.ColumnDefinitions>
         <TextBlock Style="{StaticResource HeaderStyle}" Text="CPU Status: Hostname" Grid.ColumnSpan="4" />
         <TextBlock Text="No." Grid.Row="1" />
-        <TextBlock Text="Temperature" Grid.Row="1" Grid.Column="1" />
-        <TextBlock Text="Load" Grid.Row="1" Grid.Column="2" />
+        <TextBlock Text="Mhz" Grid.Row="1" Grid.Column="1" />
+        <TextBlock Text="Load %" Grid.Row="1" Grid.Column="2" />
         <TextBlock Text="CPU1" Grid.Row="2" />
-        <TextBlock Text="t1" Grid.Row="2" Grid.Column="1" />
-        <TextBlock Text="Lo1" Grid.Row="2" Grid.Column="2" />
+        <TextBlock Text="{Binding Freq1, Converter={StaticResource FrequencyStringConverter}}" Grid.Row="2" Grid.Column="1" />
+        <TextBlock Text="{Binding CpuLoad1, Converter={StaticResource PercentageStringConverter}}" Grid.Row="2" Grid.Column="2" />
         <TextBlock Text="CPU2" Grid.Row="3" />
-        <TextBlock Text="t2" Grid.Row="3" Grid.Column="1" />
-        <TextBlock Text="lo2" Grid.Row="3" Grid.Column="2" />
+        <TextBlock Text="{Binding Freq2, Converter={StaticResource FrequencyStringConverter}}" Grid.Row="3" Grid.Column="1" />
+        <TextBlock Text="{Binding CpuLoad2, Converter={StaticResource PercentageStringConverter}}" Grid.Row="3" Grid.Column="2" />
 
         <TextBlock Text="CPU3" Grid.Row="4" />
-        <TextBlock Text="t3" Grid.Row="4" Grid.Column="1" />
-        <TextBlock Text="lo3" Grid.Row="4" Grid.Column="2" />
+        <TextBlock Text="{Binding Freq3, Converter={StaticResource FrequencyStringConverter}}" Grid.Row="4" Grid.Column="1" />
+        <TextBlock Text="{Binding CpuLoad3, Converter={StaticResource PercentageStringConverter}}" Grid.Row="4" Grid.Column="2" />
 
         <TextBlock Text="CPU4" Grid.Row="5" />
-        <TextBlock Text="t4" Grid.Row="5" Grid.Column="1" />
-        <TextBlock Text="lo4" Grid.Row="5" Grid.Column="2" />
+        <TextBlock Text="{Binding Freq4, Converter={StaticResource FrequencyStringConverter}}" Grid.Row="5" Grid.Column="1" />
+        <TextBlock Text="{Binding CpuLoad4, Converter={StaticResource PercentageStringConverter}}" Grid.Row="5" Grid.Column="2" />
+        <TextBlock Text="Temp:" Grid.Row="6" />
+        <TextBlock Text="{Binding Temperature, Converter={StaticResource TemperatureStringConverter}}" Grid.Row="6" Grid.Column="1" />
 
         <chartingToolkit:Chart Name="CPULoad"  Height="150" Width="500"  Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0" Padding="0" >
             <chartingToolkit:Chart.LegendStyle>

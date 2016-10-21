@@ -115,6 +115,9 @@
     <Compile Include="AttachedProperties\ScrollHelper.cs" />
     <Compile Include="Configuration\CpuMonitorConfigSection.cs" />
     <Compile Include="Configuration\ICpuMonitorConfigSection.cs" />
+    <Compile Include="Converter\FrequencyStringConverter.cs" />
+    <Compile Include="Converter\PercentageStringConverter.cs" />
+    <Compile Include="Converter\TemperatureStringConverter.cs" />
     <Compile Include="DesignTimeViewModels\MonitorListViewModel.cs" />
     <Compile Include="DesignTimeViewModels\SshCommandExecutionViewModel.cs" />
     <Compile Include="Events\ArmbianMontorMessageEvent.cs" />
