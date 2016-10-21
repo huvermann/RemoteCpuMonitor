@@ -1,4 +1,5 @@
 ﻿using RemoteCpuMonitor.Notifications;
+using System;
 
 namespace RemoteCpuMonitor.SSHHelper
 {

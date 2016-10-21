@@ -31,9 +31,9 @@
 
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Content="Connect all" Style="{StaticResource CommandButtonStype}"  />
-            <Button Content="Disconnect" />
-            <Button Content="Heatup" />
+            <Button Content="Connect all" Style="{StaticResource CommandButtonStype}" Command="{Binding ConnectAllCommand}"  />
+            <Button Content="Disconnect" Command="{Binding DisconnectCommand}" />
+            <Button Content="Shutdown" Command="{Binding ShutdownCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

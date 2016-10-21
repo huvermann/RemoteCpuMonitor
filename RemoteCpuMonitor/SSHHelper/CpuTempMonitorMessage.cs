@@ -17,8 +17,9 @@ namespace RemoteCpuMonitor.SSHHelper
         public int CpuSpeed2 { get; set; }
         public int CpuSpeed3 { get; set; }
         public int CpuSpeed4 { get; set; }
+        public object Sender { get; set; }
 
-        static public CpuTempMonitorMessage ParseMonitorString(string rawData)
+        static public CpuTempMonitorMessage ParseMonitorString(object Sender, string rawData)
         {
             CpuTempMonitorMessage result = null;
             string pattern = @"(\d{2}:\d{2}:\d{2}) (\d+)°C (\d+)°C (\d+) MHz (\d+) MHz (\d+) MHz (\d+) MHz";
@@ -33,6 +34,7 @@ namespace RemoteCpuMonitor.SSHHelper
                 result.CpuSpeed2 = int.Parse(match[0].Groups[5].Value, CultureInfo.InstalledUICulture);
                 result.CpuSpeed3 = int.Parse(match[0].Groups[6].Value, CultureInfo.InstalledUICulture);
                 result.CpuSpeed4 = int.Parse(match[0].Groups[7].Value, CultureInfo.InstalledUICulture);
+                result.Sender = Sender;
             }
             return result;
         }

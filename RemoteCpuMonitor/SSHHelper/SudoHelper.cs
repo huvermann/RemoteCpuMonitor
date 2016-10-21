@@ -19,6 +19,7 @@ namespace RemoteCpuMonitor.SSHHelper
         private bool _isClientRunning = false;
         private bool _abortClient = false;
 
+
         public SudoHelper(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
@@ -154,7 +155,7 @@ namespace RemoteCpuMonitor.SSHHelper
 
         private void parseLine(string line)
         {
-            var data1 = CpuTempMonitorMessage.ParseMonitorString(line);
+            var data1 = CpuTempMonitorMessage.ParseMonitorString(this, line);
             if (data1 != null)
             {
                 eventAggregator.GetEvent<CpuTempMonitorMessageEvent>().Publish(data1);

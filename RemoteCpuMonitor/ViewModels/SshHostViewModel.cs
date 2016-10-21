@@ -1,7 +1,13 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
+using RemoteCpuMonitor.Events;
+using RemoteCpuMonitor.Models;
+using RemoteCpuMonitor.Notifications;
 using RemoteCpuMonitor.SSHHelper;
+using RemoteCpuMonitor.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,15 +15,122 @@ using static RemoteCpuMonitor.Configuration.CpuMonitorConfigSection;
 
 namespace RemoteCpuMonitor.ViewModels
 {
-    public class SshHostViewModel : BindableBase
+    public class SshHostViewModel : BindableBase, IDisposable
     {
 
-        public SshHostViewModel(ISudoHelper sudoHelper)
-        {
-            this._sudoHelper = sudoHelper;
-        }
         private HostConfigElement _config;
         private ISudoHelper _sudoHelper;
+        private IEventAggregator _eventAggregator;
+
+        public SshHostViewModel(ISudoHelper sudoHelper, IEventAggregator eventAggregator)
+        {
+            this._sudoHelper = sudoHelper;
+            this._eventAggregator = eventAggregator;
+            this._eventAggregator.GetEvent<MasterNotificationMessageEvent>().Subscribe(OnMasterNotificationMessage);
+            this._eventAggregator.GetEvent<CpuTempMonitorMessageEvent>().Subscribe(onReceiveCpuTemperatureMonitorMessage);
+            this._cpu1LoadEntries = new ObservableCollection<HeatingChartData>();
+            this._cpu2LoadEntries = new ObservableCollection<HeatingChartData>();
+            this._cpu3LoadEntries = new ObservableCollection<HeatingChartData>();
+            this._cpu4LoadEntries = new ObservableCollection<HeatingChartData>();
+            this._temperatureData = new ObservableCollection<HeatingChartData>();
+        }
+
+        #region SshStatusNotifications
+        private void onReceiveCpuTemperatureMonitorMessage(CpuTempMonitorMessage message)
+        {
+            if (message.Sender == this._sudoHelper)
+            {
+                Console.WriteLine("OK, Message ist von mir.");
+                // Received a CPU-Status Message
+                DispatcherHelper.Invoke(() =>
+                {
+                    HeatingChartData entry = new HeatingChartData() { Time = message.Time, Value = message.Temperature1 };
+                //Todo: Implement CPU Speed and Load
+                this._temperatureData.Add(entry);
+                    
+                });
+            } else
+            {
+                Console.WriteLine("Message war nicht von mir");
+            }
+        }
+        #endregion
+
+        #region MasterNotificationMessage handling
+        private void OnMasterNotificationMessage(MasterNotification message)
+        {
+            if (message != null)
+            {
+                switch (message.NotificationType)
+                {
+                    case NotificationType.Connect:
+                        OnConnectNotificationMessage(message);
+                        break;
+                    case NotificationType.Disconnect:
+                        OnDisconnectNotificationMessage(message);
+                        break;
+                    case NotificationType.Shutdown:
+                        OnShutdownNotificationMessage(message);
+                        break;
+                    case NotificationType.ClearData:
+                        OnClearDataNotificationMessage();
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        }
+
+        private void OnClearDataNotificationMessage()
+        {
+            this._cpu1LoadEntries.Clear();
+            this._cpu2LoadEntries.Clear();
+            this._cpu3LoadEntries.Clear();
+            this._cpu4LoadEntries.Clear();
+            this._temperatureData.Clear();
+
+
+        }
+
+        private void OnShutdownNotificationMessage(MasterNotification message)
+        {
+            if (message != null)
+            {
+                if (this._sudoHelper != null)
+                {
+                    var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
+                    this._sudoHelper.StopSession();
+                    this._sudoHelper.StartSession(connectiondata, "sudo shutdown now");
+                }
+            }
+        }
+
+        private void OnDisconnectNotificationMessage(MasterNotification message)
+        {
+            if (message != null)
+            {
+                Console.WriteLine("OnDisconnect notification.");
+                if (this._sudoHelper != null)
+                {
+                    this._sudoHelper.StopSession();
+                }
+            }
+        }
+
+        private void OnConnectNotificationMessage(MasterNotification message)
+        {
+            if (message != null)
+            {
+                Console.WriteLine("OnConnect notification.");
+                if (this._sudoHelper != null)
+                {
+                    var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
+                    this._sudoHelper.StartSession(connectiondata, "sudo coretempmon");
+                }
+            }
+        }
+        #endregion
 
         public void ConfigureHost(HostConfigElement config)
         {
@@ -56,7 +169,7 @@ namespace RemoteCpuMonitor.ViewModels
         public string UserName
         {
             get { return _userName; }
-            set { SetProperty(ref _hostname, value); }
+            set { SetProperty(ref _userName, value); }
         }
 
         private string _password;
@@ -139,6 +252,78 @@ namespace RemoteCpuMonitor.ViewModels
         {
             get { return _temperature; }
             set { SetProperty(ref _temperature, value); }
+        }
+
+        private ObservableCollection<HeatingChartData> _cpu1LoadEntries;
+        public ObservableCollection<HeatingChartData> CpuLoadEntries
+        {
+            get { return _cpu1LoadEntries; }
+            set { SetProperty(ref _cpu1LoadEntries, value); }
+        }
+        private ObservableCollection<HeatingChartData> _cpu2LoadEntries;
+        public ObservableCollection<HeatingChartData> Cpu2LoadEntries
+        {
+            get { return _cpu2LoadEntries; }
+            set { SetProperty(ref _cpu2LoadEntries, value); }
+        }
+
+        private ObservableCollection<HeatingChartData> _cpu3LoadEntries;
+        public ObservableCollection<HeatingChartData> Cpu3LoadEntries
+        {
+            get { return _cpu3LoadEntries; }
+            set { SetProperty(ref _cpu3LoadEntries, value); }
+        }
+        private ObservableCollection<HeatingChartData> _cpu4LoadEntries;
+        public ObservableCollection<HeatingChartData> Cpu4LoadEntries
+        {
+            get { return _cpu4LoadEntries; }
+            set { SetProperty(ref _cpu4LoadEntries, value); }
+        }
+        private ObservableCollection<HeatingChartData> _temperatureData;
+        public ObservableCollection<HeatingChartData> TemperatureData
+        {
+            get { return _temperatureData; }
+            set { SetProperty(ref _temperatureData, value); }
+        }
+
+        #endregion
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    if (this._sudoHelper != null)
+                    {
+                        this._sudoHelper.StopSession();
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~SshHostViewModel() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
         }
         #endregion
     }

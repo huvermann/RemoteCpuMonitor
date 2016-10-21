@@ -122,6 +122,7 @@
     <Compile Include="DesignTimeViewModels\SshCommandExecutionViewModel.cs" />
     <Compile Include="Events\ArmbianMontorMessageEvent.cs" />
     <Compile Include="Events\CpuTempMonitorMessageEvent.cs" />
+    <Compile Include="Events\MasterNotificationMessageEvent.cs" />
     <Compile Include="Events\SshResponseMessageEvent.cs" />
     <Compile Include="Models\HeatingChartData.cs" />
     <Compile Include="Models\ObservableHostList.cs" />
