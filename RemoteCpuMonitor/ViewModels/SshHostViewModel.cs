@@ -21,6 +21,7 @@ namespace RemoteCpuMonitor.ViewModels
         private HostConfigElement _config;
         private ISudoHelper _sudoHelper;
         private IEventAggregator _eventAggregator;
+        private List<CpuTempMonitorMessage> _statistics;
 
         public SshHostViewModel(ISudoHelper sudoHelper, IEventAggregator eventAggregator)
         {
@@ -33,6 +34,8 @@ namespace RemoteCpuMonitor.ViewModels
             this._cpu3LoadEntries = new ObservableCollection<HeatingChartData>();
             this._cpu4LoadEntries = new ObservableCollection<HeatingChartData>();
             this._temperatureData = new ObservableCollection<HeatingChartData>();
+            // Todo: implement reporting
+            this._statistics = new List<CpuTempMonitorMessage>();
         }
 
         #region SshStatusNotifications
@@ -40,14 +43,14 @@ namespace RemoteCpuMonitor.ViewModels
         {
             if (message.Sender == this._sudoHelper)
             {
-                Console.WriteLine("OK, Message ist von mir.");
                 // Received a CPU-Status Message
                 DispatcherHelper.Invoke(() =>
                 {
+                    this._statistics.Add(message);
                     HeatingChartData entry = new HeatingChartData() { Time = message.Time, Value = message.Temperature };
-                //Todo: Implement CPU Speed and Load
-                this._temperatureData.Add(entry);
-                this._cpu1LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad1 });
+                    //Todo: Implement CPU Speed and Load
+                    this._temperatureData.Add(entry);
+                    this._cpu1LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad1 });
                     this._cpu2LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad2 });
                     this._cpu3LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad3 });
                     this._cpu4LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad4 });
@@ -59,15 +62,9 @@ namespace RemoteCpuMonitor.ViewModels
                     this.Freq1 = message.CpuSpeed;
                     this.Freq2 = message.CpuSpeed;
                     this.Freq3 = message.CpuSpeed;
-
                     this.Freq4 = message.CpuSpeed;
-
-                    //this._temperature = message.Temperature;
-                    this.Temperature = message.Temperature;                    
+                    this.Temperature = message.Temperature;
                 });
-            } else
-            {
-                Console.WriteLine("Message war nicht von mir");
             }
         }
         #endregion
@@ -114,8 +111,7 @@ namespace RemoteCpuMonitor.ViewModels
             this._cpu3LoadEntries.Clear();
             this._cpu4LoadEntries.Clear();
             this._temperatureData.Clear();
-
-
+            this._statistics.Clear();
         }
 
         private void OnShutdownNotificationMessage(MasterNotification message)
@@ -315,6 +311,7 @@ namespace RemoteCpuMonitor.ViewModels
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
+        
 
         protected virtual void Dispose(bool disposing)
         {

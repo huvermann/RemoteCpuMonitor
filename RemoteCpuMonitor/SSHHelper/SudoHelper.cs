@@ -104,20 +104,24 @@ namespace RemoteCpuMonitor.SSHHelper
                     {
                         // Client erzeugen
                         SshClient sshClient = new SshClient(connectionData.Hostname, 22, connectionData.UserName, connectionData.Password);
-
+                        Console.WriteLine("Verbinde host: {0}", connectionData.Hostname);
                         // Verbinden
                         sshClient.Connect();
                         IDictionary<Renci.SshNet.Common.TerminalModes, uint> termkvp = new Dictionary<Renci.SshNet.Common.TerminalModes, uint>();
                         termkvp.Add(Renci.SshNet.Common.TerminalModes.ECHO, 53);
                         ShellStream shellStream = sshClient.CreateShellStream("text", 200, 24, 800, 600, 1024, termkvp);
+
+                        Console.WriteLine("Verbunden mit: {0}", connectionData.Hostname);
                         string response = shellStream.Expect(new Regex(@"[$>]")); //expect user prompt
 
                         // Befehl ausführen
                         shellStream.WriteLine(command);
+                        Console.WriteLine("{0}: Ausführen: {1}", connectionData.Hostname, command);
                         Thread.Sleep(500);
                         response = shellStream.Expect(new Regex(@"([$#>:])")); //expect password or user prompt
                         if (response.Contains(string.Format("password for {0}:", connectionData.UserName)))
                         {
+                            Console.WriteLine("Sende Passwort an: {0}", connectionData.Hostname);
                             //send password
                             shellStream.WriteLine(connectionData.Password);
                         } else
@@ -127,7 +131,8 @@ namespace RemoteCpuMonitor.SSHHelper
 
                         while (!_abortClient)
                         {
-                            
+
+                            Console.WriteLine("Warte auf Zeile von: {0}", connectionData.Hostname);
                             string line = shellStream.ReadLine();
                             parseLine(line);
                         }
