@@ -134,6 +134,7 @@
     <Compile Include="SSHHelper\CpuTempMonitorMessage.cs" />
     <Compile Include="SSHHelper\ISudoHelper.cs" />
     <Compile Include="SSHHelper\SshResponse.cs" />
+    <Compile Include="SSHHelper\SshSudoSession.cs" />
     <Compile Include="SSHHelper\SudoHelper.cs" />
     <Compile Include="Utils\DispatcherHelper.cs" />
     <Compile Include="ViewModels\MonitorListViewModel.cs" />
