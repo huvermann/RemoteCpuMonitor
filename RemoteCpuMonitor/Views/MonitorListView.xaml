@@ -34,6 +34,7 @@
             <Button Content="Connect all" Style="{StaticResource CommandButtonStype}" Command="{Binding ConnectAllCommand}"  />
             <Button Content="Disconnect" Command="{Binding DisconnectCommand}" />
             <Button Content="Shutdown" Command="{Binding ShutdownCommand}" />
+            <Button Content="Testfunc" Command="{Binding TestFuncCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

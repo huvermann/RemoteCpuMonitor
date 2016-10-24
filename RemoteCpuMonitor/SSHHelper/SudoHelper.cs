@@ -134,11 +134,12 @@ namespace RemoteCpuMonitor.SSHHelper
 
                         Console.WriteLine("Beende Session!");
                         _isClientRunning = false;
-                        
+
 
 
 
                         sshClient.Disconnect();
+                        sshClient.Dispose();
 
                     }
                     catch (Exception e)

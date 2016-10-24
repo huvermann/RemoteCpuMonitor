@@ -61,9 +61,9 @@ namespace RemoteCpuMonitor.ViewModels
         {
             DispatcherHelper.Invoke(() =>
             {
-                HeatingChartData entry = new HeatingChartData() { Time = data.Time, Value = data.Temperature1 };
+                HeatingChartData entry = new HeatingChartData() { Time = data.Time, Value = data.Temperature };
                 _monitorDataEntries.Add(entry);
-                this.SshResponse += string.Format("Daten hinzugefügt...{0}; {1}\n", data.Time, data.Temperature1);
+                this.SshResponse += string.Format("Daten hinzugefügt...{0}; {1}\n", data.Time, data.Temperature);
                 scrollToend();
 
 

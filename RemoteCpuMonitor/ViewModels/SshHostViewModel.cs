@@ -44,10 +44,26 @@ namespace RemoteCpuMonitor.ViewModels
                 // Received a CPU-Status Message
                 DispatcherHelper.Invoke(() =>
                 {
-                    HeatingChartData entry = new HeatingChartData() { Time = message.Time, Value = message.Temperature1 };
+                    HeatingChartData entry = new HeatingChartData() { Time = message.Time, Value = message.Temperature };
                 //Todo: Implement CPU Speed and Load
                 this._temperatureData.Add(entry);
-                    
+                this._cpu1LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad1 });
+                    this._cpu2LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad2 });
+                    this._cpu3LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad3 });
+                    this._cpu4LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad4 });
+
+                    this.CpuLoad1 = message.CpuLoad1;
+                    this.CpuLoad2 = message.CpuLoad2;
+                    this.CpuLoad3 = message.CpuLoad3;
+                    this.CpuLoad4 = message.CpuLoad4;
+                    this.Freq1 = message.CpuSpeed;
+                    this.Freq2 = message.CpuSpeed;
+                    this.Freq3 = message.CpuSpeed;
+
+                    this.Freq4 = message.CpuSpeed;
+
+                    //this._temperature = message.Temperature;
+                    this.Temperature = message.Temperature;                    
                 });
             } else
             {
@@ -75,11 +91,20 @@ namespace RemoteCpuMonitor.ViewModels
                     case NotificationType.ClearData:
                         OnClearDataNotificationMessage();
                         break;
+                    case NotificationType.Testfunc:
+                        OnTestFunNotificationMessage(message);
+                        break;
                     default:
                         break;
 
                 }
             }
+        }
+
+        private void OnTestFunNotificationMessage(MasterNotification message)
+        {
+            Console.WriteLine("Just a test function.");
+            this._temperature = 70.1;
         }
 
         private void OnClearDataNotificationMessage()
@@ -144,7 +169,7 @@ namespace RemoteCpuMonitor.ViewModels
 
         private void InitDisplay()
         {
-            _headerText = string.Format("CPU Status: {0}", this._hostname);
+            _headerText = this._hostname;
             _freq1 = 0;
             _freq2 = 0;
             _freq3 = 0;
@@ -255,7 +280,7 @@ namespace RemoteCpuMonitor.ViewModels
         }
 
         private ObservableCollection<HeatingChartData> _cpu1LoadEntries;
-        public ObservableCollection<HeatingChartData> CpuLoadEntries
+        public ObservableCollection<HeatingChartData> Cpu1LoadEntries
         {
             get { return _cpu1LoadEntries; }
             set { SetProperty(ref _cpu1LoadEntries, value); }

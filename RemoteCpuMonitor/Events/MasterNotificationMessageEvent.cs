@@ -22,6 +22,7 @@ namespace RemoteCpuMonitor.Events
         Connect,
         Disconnect,
         Shutdown,
-        ClearData
+        ClearData,
+        Testfunc
     }
 }

@@ -58,7 +58,11 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{StaticResource HeaderStyle}" Text="CPU Status: Hostname" Grid.ColumnSpan="4" />
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="4">
+            <TextBlock Style="{StaticResource HeaderStyle}" Text="CPU Status:" Margin="0,0,10,0"  />
+            <TextBlock Style="{StaticResource HeaderStyle}" Text="{Binding HeaderText}" />
+        </StackPanel>
+        
         <TextBlock Text="No." Grid.Row="1" />
         <TextBlock Text="Mhz" Grid.Row="1" Grid.Column="1" />
         <TextBlock Text="Load %" Grid.Row="1" Grid.Column="2" />
@@ -98,7 +102,7 @@
 
             </chartingToolkit:Chart.ChartAreaStyle>-->
             <chartingToolkit:Chart.Series >
-                <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad1}" Title="CPU1" ItemsSource="{Binding Cpu1LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+                <chartingToolkit:LineSeries Title="CPU1" ItemsSource="{Binding Cpu1LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
                 <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad2}" Title="CPU2" ItemsSource="{Binding Cpu2LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
                 <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad3}" Title="CPU3" ItemsSource="{Binding Cpu3LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
                 <chartingToolkit:LineSeries DataPointStyle="{StaticResource CpuLoad4}" Title="CPU4" ItemsSource="{Binding Cpu4LoadEntries}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />

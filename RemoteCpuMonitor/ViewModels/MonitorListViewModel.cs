@@ -23,6 +23,12 @@ namespace RemoteCpuMonitor.ViewModels
             ConnectAllCommand = new DelegateCommand(ConnectAll);
             DisconnectCommand = new DelegateCommand(DisconnectAll);
             ShutdownCommand = new DelegateCommand(Shutdown);
+            TestFuncCommand = new DelegateCommand(TestFun);
+        }
+
+        private void TestFun()
+        {
+            this._eventAggregator.GetEvent<MasterNotificationMessageEvent>().Publish(new MasterNotification() { NotificationType = NotificationType.Testfunc });
         }
 
         private void RegisterEventHandler(IEventAggregator eventAggregator)
@@ -51,5 +57,6 @@ namespace RemoteCpuMonitor.ViewModels
         public DelegateCommand ConnectAllCommand { get; private set; }
         public DelegateCommand DisconnectCommand { get; private set; }
         public DelegateCommand ShutdownCommand { get; private set; }
+        public DelegateCommand TestFuncCommand { get; private set; }
     }
 }
