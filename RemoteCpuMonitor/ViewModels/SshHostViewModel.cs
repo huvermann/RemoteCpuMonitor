@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static RemoteCpuMonitor.Configuration.CpuMonitorConfigSection;
 
@@ -22,10 +23,15 @@ namespace RemoteCpuMonitor.ViewModels
         private ISudoHelper _sudoHelper;
         private IEventAggregator _eventAggregator;
         private List<CpuTempMonitorMessage> _statistics;
+        private SshSudoSession _sudoSession;
 
         public SshHostViewModel(ISudoHelper sudoHelper, IEventAggregator eventAggregator)
         {
             this._sudoHelper = sudoHelper;
+            this._eventAggregator = eventAggregator;
+            this._sudoSession = new SshSudoSession(eventAggregator);
+            this.registerEvents();
+
             this._eventAggregator = eventAggregator;
             this._eventAggregator.GetEvent<MasterNotificationMessageEvent>().Subscribe(OnMasterNotificationMessage);
             this._eventAggregator.GetEvent<CpuTempMonitorMessageEvent>().Subscribe(onReceiveCpuTemperatureMonitorMessage);
@@ -36,6 +42,20 @@ namespace RemoteCpuMonitor.ViewModels
             this._temperatureData = new ObservableCollection<HeatingChartData>();
             // Todo: implement reporting
             this._statistics = new List<CpuTempMonitorMessage>();
+        }
+
+        private void registerEvents()
+        {
+            this._eventAggregator.GetEvent<SshClientStatusMessageEvent>().Subscribe(onSshStatusMessage);
+            this._sudoSession.AddMatching(new Regex(@"(\d{2}:\d{2}:\d{2})\s+(\d+[,.]\d+)[^\d]+(\d+)\sMHz\s(\d+[,.]\d{2})\s(\d+[.,]\d{2})\s(\d+[.,]\d{2})\s(\d+[.,]\d{2})"), onStatusMonitorMatch);
+        }
+
+        private void onStatusMonitorMatch(Match match)
+        {
+            // Todo: read the match
+            CpuTempMonitorMessage msg = CpuTempMonitorMessage.ParseMatchObject(match);
+            msg.Sender = this._sudoHelper;
+            this.onReceiveCpuTemperatureMonitorMessage(msg);
         }
 
         #region SshStatusNotifications
@@ -68,6 +88,34 @@ namespace RemoteCpuMonitor.ViewModels
             }
         }
         #endregion
+
+        private void onSshStatusMessage(SshClientStatusMessage message)
+        {
+            if (message.Sender == this._sudoSession) {
+                switch (message.MessageType)
+                {
+                    case SshClientStatusMessageType.Connecting:
+                        Console.WriteLine("xxx Connecting");
+                        break;
+                    case SshClientStatusMessageType.Connected:
+                        Console.WriteLine("xxx connected!");
+                        break;
+                    case SshClientStatusMessageType.Disconnecting:
+                        Console.WriteLine("xxx disconnecting!");
+                        break;
+                    case SshClientStatusMessageType.Disconnected:
+                        Console.WriteLine("xxx disconnected!");
+                        break;
+                    case SshClientStatusMessageType.ConnectionError:
+                        Console.WriteLine(string.Format("xxx Connectionerror: {0}", message.MessageText));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        
 
         #region MasterNotificationMessage handling
         private void OnMasterNotificationMessage(MasterNotification message)
@@ -129,25 +177,43 @@ namespace RemoteCpuMonitor.ViewModels
 
         private void OnDisconnectNotificationMessage(MasterNotification message)
         {
+            //if (message != null)
+            //{
+            //    Console.WriteLine("OnDisconnect notification.");
+            //    if (this._sudoHelper != null)
+            //    {
+            //        this._sudoHelper.StopSession();
+            //    }
+            //}
             if (message != null)
             {
-                Console.WriteLine("OnDisconnect notification.");
-                if (this._sudoHelper != null)
+                if (this._sudoSession != null)
                 {
-                    this._sudoHelper.StopSession();
+                    this._sudoSession.StopSession();
+                    this._sudoSession.Dispose();
+                    this._sudoSession = null;
+                   
                 }
             }
         }
 
         private void OnConnectNotificationMessage(MasterNotification message)
         {
+            //if (message != null)
+            //{
+            //    Console.WriteLine("OnConnect notification.");
+            //    if (this._sudoHelper != null)
+            //    {
+            //        var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
+            //        this._sudoHelper.StartSession(connectiondata, "sudo coretempmon");
+            //    }
+            //}
             if (message != null)
             {
-                Console.WriteLine("OnConnect notification.");
-                if (this._sudoHelper != null)
+                if (this._sudoSession != null)
                 {
                     var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
-                    this._sudoHelper.StartSession(connectiondata, "sudo coretempmon");
+                    this._sudoSession.RunSession(connectiondata, "sudo coretempmon");
                 }
             }
         }

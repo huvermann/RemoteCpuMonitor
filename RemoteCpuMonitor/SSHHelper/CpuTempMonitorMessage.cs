@@ -38,5 +38,22 @@ namespace RemoteCpuMonitor.SSHHelper
             }
             return result;
         }
+
+        static public CpuTempMonitorMessage ParseMatchObject(Match match)
+        {
+            CpuTempMonitorMessage result = null;
+            if (match != null && match.Success)
+            {
+                result.Time = DateTime.ParseExact(match.Groups[1].Value, "HH:mm:ss", CultureInfo.InvariantCulture);
+                result.Temperature = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+                result.CpuSpeed = int.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+                result.CpuLoad1 = double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture);
+                result.CpuLoad2 = double.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture);
+                result.CpuLoad3 = double.Parse(match.Groups[6].Value, CultureInfo.InvariantCulture);
+                result.CpuLoad4 = double.Parse(match.Groups[7].Value, CultureInfo.InvariantCulture);
+            }
+
+            return result;
+        }
     }
 }
