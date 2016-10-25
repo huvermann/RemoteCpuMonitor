@@ -8,6 +8,7 @@
              xmlns:views="clr-namespace:RemoteCpuMonitor.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
+            
              >
 
     <UserControl.Resources>
@@ -17,19 +18,19 @@
     </UserControl.Resources>
     <Grid Background="Black">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel HorizontalAlignment="Stretch" Grid.RowSpan="2">
-            <ListView Margin="4" ItemsSource="{Binding HostList}" HorizontalAlignment="Stretch" Background="Black">
+        <ListView  Margin="4" ItemsSource="{Binding HostList}" Background="Black" HorizontalContentAlignment="Stretch" Height="880">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <views:MonitorListItemView HorizontalAlignment="Stretch" />
-                    </DataTemplate>
+                <DataTemplate>
+                    <views:ClientItemView />
+                </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-        </StackPanel>
+
+
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Content="Connect all" Style="{StaticResource CommandButtonStype}" Command="{Binding ConnectAllCommand}"  />
             <Button Content="Disconnect" Command="{Binding DisconnectCommand}" />

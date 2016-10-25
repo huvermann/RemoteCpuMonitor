@@ -40,6 +40,8 @@ namespace RemoteCpuMonitor.ViewModels
             this._cpu3LoadEntries = new ObservableCollection<HeatingChartData>();
             this._cpu4LoadEntries = new ObservableCollection<HeatingChartData>();
             this._temperatureData = new ObservableCollection<HeatingChartData>();
+            this._cpuClockFrequency = new ObservableCollection<HeatingChartData>();
+
             // Todo: implement reporting
             this._statistics = new List<CpuTempMonitorMessage>();
         }
@@ -75,6 +77,7 @@ namespace RemoteCpuMonitor.ViewModels
                     this._cpu2LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad2 });
                     this._cpu3LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad3 });
                     this._cpu4LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad4 });
+                    this._cpuClockFrequency.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuSpeed });
 
                     this.CpuLoad1 = message.CpuLoad1;
                     this.CpuLoad2 = message.CpuLoad2;
@@ -372,6 +375,13 @@ namespace RemoteCpuMonitor.ViewModels
         {
             get { return _temperatureData; }
             set { SetProperty(ref _temperatureData, value); }
+        }
+
+        private ObservableCollection<HeatingChartData> _cpuClockFrequency;
+        public ObservableCollection<HeatingChartData> CpuClockFrequency
+        {
+            get { return _cpuClockFrequency; }
+            set { SetProperty(ref _cpuClockFrequency, value); }
         }
 
         #endregion
