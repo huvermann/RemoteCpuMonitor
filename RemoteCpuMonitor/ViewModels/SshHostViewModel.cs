@@ -20,14 +20,12 @@ namespace RemoteCpuMonitor.ViewModels
     {
 
         private HostConfigElement _config;
-        private ISudoHelper _sudoHelper;
         private IEventAggregator _eventAggregator;
         private List<CpuTempMonitorMessage> _statistics;
         private SshSudoSession _sudoSession;
 
-        public SshHostViewModel(ISudoHelper sudoHelper, IEventAggregator eventAggregator)
+        public SshHostViewModel(IEventAggregator eventAggregator)
         {
-            this._sudoHelper = sudoHelper;
             this._eventAggregator = eventAggregator;
             this._sudoSession = new SshSudoSession(eventAggregator);
             this.registerEvents();
@@ -57,39 +55,37 @@ namespace RemoteCpuMonitor.ViewModels
         {
             // Todo: read the match
             CpuTempMonitorMessage msg = CpuTempMonitorMessage.ParseMatchObject(match);
-            msg.Sender = this._sudoHelper;
             this.onReceiveCpuTemperatureMonitorMessage(msg);
         }
 
-        
+
         private void onReceiveCpuTemperatureMonitorMessage(CpuTempMonitorMessage message)
         {
-            if (message.Sender == this._sudoHelper)
+
+            // Received a CPU-Status Message
+            DispatcherHelper.Invoke(() =>
             {
-                // Received a CPU-Status Message
-                DispatcherHelper.Invoke(() =>
-                {
-                    this._statistics.Add(message);
-                    HeatingChartData entry = new HeatingChartData() { Time = message.Time, Value = message.Temperature };
+                this._statistics.Add(message);
+                HeatingChartData entry = new HeatingChartData() { Time = message.Time, Value = message.Temperature };
                     //Todo: Implement CPU Speed and Load
                     this._temperatureData.Add(entry);
-                    this._cpu1LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad1 });
-                    this._cpu2LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad2 });
-                    this._cpu3LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad3 });
-                    this._cpu4LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad4 });
-                    this._cpuClockFrequency.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuSpeed });
+                this._cpu1LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad1 });
+                this._cpu2LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad2 });
+                this._cpu3LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad3 });
+                this._cpu4LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad4 });
+                this._cpuClockFrequency.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuSpeed });
 
-                    this.CpuLoad1 = message.CpuLoad1;
-                    this.CpuLoad2 = message.CpuLoad2;
-                    this.CpuLoad3 = message.CpuLoad3;
-                    this.CpuLoad4 = message.CpuLoad4;
-                    this.Freq1 = message.CpuSpeed;
-                    this.Freq2 = message.CpuSpeed;
-                    this.Freq3 = message.CpuSpeed;
-                    this.Freq4 = message.CpuSpeed;
-                    this.Temperature = message.Temperature;
-                });
-            }
+                this.CpuLoad1 = message.CpuLoad1;
+                this.CpuLoad2 = message.CpuLoad2;
+                this.CpuLoad3 = message.CpuLoad3;
+                this.CpuLoad4 = message.CpuLoad4;
+                this.Freq1 = message.CpuSpeed;
+                this.Freq2 = message.CpuSpeed;
+                this.Freq3 = message.CpuSpeed;
+                this.Freq4 = message.CpuSpeed;
+                this.Temperature = message.Temperature;
+            });
+
         }
         #endregion
 
@@ -168,27 +164,19 @@ namespace RemoteCpuMonitor.ViewModels
 
         private void OnShutdownNotificationMessage(MasterNotification message)
         {
-            if (message != null)
-            {
-                if (this._sudoHelper != null)
-                {
-                    var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
-                    this._sudoHelper.StopSession();
-                    this._sudoHelper.StartSession(connectiondata, "sudo shutdown now");
-                }
-            }
+            //if (message != null)
+            //{
+            //    if (this._sudoHelper != null)
+            //    {
+            //        var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
+            //        this._sudoHelper.StopSession();
+            //        this._sudoHelper.StartSession(connectiondata, "sudo shutdown now");
+            //    }
+            //}
         }
 
         private void OnDisconnectNotificationMessage(MasterNotification message)
         {
-            //if (message != null)
-            //{
-            //    Console.WriteLine("OnDisconnect notification.");
-            //    if (this._sudoHelper != null)
-            //    {
-            //        this._sudoHelper.StopSession();
-            //    }
-            //}
             if (message != null)
             {
                 if (this._sudoSession != null)
@@ -203,15 +191,7 @@ namespace RemoteCpuMonitor.ViewModels
 
         private void OnConnectNotificationMessage(MasterNotification message)
         {
-            //if (message != null)
-            //{
-            //    Console.WriteLine("OnConnect notification.");
-            //    if (this._sudoHelper != null)
-            //    {
-            //        var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
-            //        this._sudoHelper.StartSession(connectiondata, "sudo coretempmon");
-            //    }
-            //}
+
             if (message != null)
             {
                 if (this._sudoSession != null)
@@ -397,9 +377,11 @@ namespace RemoteCpuMonitor.ViewModels
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    if (this._sudoHelper != null)
+                    if (this._sudoSession != null)
                     {
-                        this._sudoHelper.StopSession();
+                        this._sudoSession.StopSession();
+                        this._sudoSession.Dispose();
+                        this._sudoSession = null;
                     }
                 }
 

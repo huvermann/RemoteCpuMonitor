@@ -110,15 +110,18 @@ namespace RemoteCpuMonitor.SSHHelper
                     this._terminateThread = true;
                     this._eventaggregator.GetEvent<SshClientStatusMessageEvent>().Publish(new SshClientStatusMessage() { Sender = this, MessageType = SshClientStatusMessageType.ConnectionError, MessageText = e.Message });
                     sshClient.Disconnect();
+                    this._isSessionRunning = false;
                 }
 
                 sshClient.Disconnect();
                 this._eventaggregator.GetEvent<SshClientStatusMessageEvent>().Publish(new SshClientStatusMessage() { Sender = this, MessageType = SshClientStatusMessageType.Disconnected });
+                this._isSessionRunning = false;
             }
         }
 
         private void SshClient_ErrorOccurred(object sender, Renci.SshNet.Common.ExceptionEventArgs e)
         {
+            this._isSessionRunning = false;
             this._eventaggregator.GetEvent<SshClientStatusMessageEvent>().Publish(new SshClientStatusMessage() { Sender = this, MessageType = SshClientStatusMessageType.ConnectionError, MessageText = e.Exception.Message });
         }
 
@@ -149,6 +152,7 @@ namespace RemoteCpuMonitor.SSHHelper
                     this._terminateThread = true;
                     Thread.Sleep(1);
                     this._sessionThread.Join();
+                    this._isSessionRunning = false;
                 }
             }
             

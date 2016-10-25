@@ -133,13 +133,10 @@
     <Compile Include="Notifications\ServerConnectionNotification.cs" />
     <Compile Include="SSHHelper\ArmbianMonitorResult.cs" />
     <Compile Include="SSHHelper\CpuTempMonitorMessage.cs" />
-    <Compile Include="SSHHelper\ISudoHelper.cs" />
     <Compile Include="SSHHelper\SshResponse.cs" />
     <Compile Include="SSHHelper\SshSudoSession.cs" />
-    <Compile Include="SSHHelper\SudoHelper.cs" />
     <Compile Include="Utils\DispatcherHelper.cs" />
     <Compile Include="ViewModels\MonitorListViewModel.cs" />
-    <Compile Include="ViewModels\SshCommandExecutionViewModel.cs" />
     <Compile Include="ViewModels\SshHostViewModel.cs" />
     <Compile Include="Views\ClientItemView.xaml.cs">
       <DependentUpon>ClientItemView.xaml</DependentUpon>
