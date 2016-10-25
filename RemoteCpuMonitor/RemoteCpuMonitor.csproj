@@ -144,9 +144,6 @@
     <Compile Include="Views\MonitorListView.xaml.cs">
       <DependentUpon>MonitorListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MyListControlView.xaml.cs">
-      <DependentUpon>MyListControlView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SshCommandExecutionView.xaml.cs">
       <DependentUpon>SshCommandExecutionView.xaml</DependentUpon>
     </Compile>
@@ -216,10 +213,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MonitorListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MyListControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
