@@ -50,6 +50,7 @@ namespace RemoteCpuMonitor.ViewModels
             this._sudoSession.AddMatching(new Regex(@"(\d{2}:\d{2}:\d{2})\s+(\d+[,.]\d+)[^\d]+(\d+)\sMHz\s(\d+[,.]\d{2})\s(\d+[.,]\d{2})\s(\d+[.,]\d{2})\s(\d+[.,]\d{2})"), onStatusMonitorMatch);
         }
 
+        #region SshStatusNotifications
         private void onStatusMonitorMatch(Match match)
         {
             // Todo: read the match
@@ -58,7 +59,7 @@ namespace RemoteCpuMonitor.ViewModels
             this.onReceiveCpuTemperatureMonitorMessage(msg);
         }
 
-        #region SshStatusNotifications
+        
         private void onReceiveCpuTemperatureMonitorMessage(CpuTempMonitorMessage message)
         {
             if (message.Sender == this._sudoHelper)

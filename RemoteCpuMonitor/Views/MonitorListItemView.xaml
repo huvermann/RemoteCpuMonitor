@@ -109,7 +109,7 @@
             </chartingToolkit:Chart.Series>
         </chartingToolkit:Chart>
 
-        <chartingToolkit:Chart Name="Temperature" Title="Temperature"  Height="150"  Grid.Row="7" Grid.ColumnSpan="4"  Padding="0"   >
+        <chartingToolkit:Chart Name="Temperature" Title="Temperature"  Height="150"  Grid.Row="7" Grid.Column="3"  Padding="0"   >
             <chartingToolkit:Chart.TitleStyle >
                 <Style TargetType="visualisation:Title">
                     <Setter Property="HorizontalAlignment" Value="Center" />

@@ -44,6 +44,7 @@ namespace RemoteCpuMonitor.SSHHelper
             CpuTempMonitorMessage result = null;
             if (match != null && match.Success)
             {
+                result = new CpuTempMonitorMessage();
                 result.Time = DateTime.ParseExact(match.Groups[1].Value, "HH:mm:ss", CultureInfo.InvariantCulture);
                 result.Temperature = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
                 result.CpuSpeed = int.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
