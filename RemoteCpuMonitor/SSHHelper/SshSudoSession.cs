@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace RemoteCpuMonitor.SSHHelper
 {
-    public class SshSudoSession : IDisposable
+    public class SshSudoSession : IDisposable, ISshSudoSession
     {
         private IEventAggregator _eventaggregator;
         private IList<MatchAction> matchingAggregator;
@@ -35,6 +35,18 @@ namespace RemoteCpuMonitor.SSHHelper
             this.matchingAggregator.Add(new MatchAction() { RegExpression = match, Execute = action });
         }
 
+        private Thread initThradRunner(ConnectionData connectionData, string command)
+        {
+            Thread result;
+            this._isSessionRunning = true;
+            this._terminateThread = false;
+            this._connectionData = connectionData;
+            this._commandString = command;
+            result = new Thread(() => sshThreadRunner(connectionData, command));
+            return result;
+
+        }
+
         /// <summary>
         /// Run the Session until disconnect or breakSession
         /// </summary>
@@ -45,15 +57,13 @@ namespace RemoteCpuMonitor.SSHHelper
             //Todo: Implement
             if (!this._isSessionRunning)
             {
-                this._isSessionRunning = true;
-                this._terminateThread = false;
-                this._connectionData = connectionData;
-                this._commandString = command;
-                this._sessionThread = new Thread(() => sshThreadRunner(connectionData, command));
+                this._sessionThread = this.initThradRunner(connectionData, command);
                 this._sessionThread.Start();
-
-
             }
+        }
+        public static async void RunSessionAsync(ConnectionData connectionData, string command)
+        {
+
         }
         /// <summary>
         /// Runs in a new thread

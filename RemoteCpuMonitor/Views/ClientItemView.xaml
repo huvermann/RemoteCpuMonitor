@@ -52,6 +52,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="DefaultAxixStyle" TargetType="chartingToolkit:LinearAxis">
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Foreground" Value="AliceBlue"/>
+            <Setter Property="Orientation" Value="Y" />
+        </Style>
     </UserControl.Resources>
     <Grid Margin="3">
         <Grid.RowDefinitions>
@@ -113,12 +118,9 @@
 
         <chartingToolkit:Chart Name="CPULoad"   Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0" Padding="0" PlotAreaStyle="{DynamicResource CoolPlotAreaStyle}"  >
 
-            <!--<chartingToolkit:Chart.PlotAreaStyle>
-                <Style TargetType="Grid">
-                    <Setter Property="Background" Value="Black" />
-                </Style>
-            </chartingToolkit:Chart.PlotAreaStyle>-->
-
+            <chartingToolkit:Chart.Axes>
+                <chartingToolkit:LinearAxis  Minimum="0" Maximum="100" Title="% CPU Load" Orientation="Y" Width="60" Foreground="LightGreen" Interval="20" />
+            </chartingToolkit:Chart.Axes>
             
             <chartingToolkit:Chart.LegendStyle>
                 <Style TargetType="visualisation:Legend">
@@ -168,17 +170,16 @@
                 </Style>
 
             </chartingToolkit:Chart.TitleStyle>
-            <!--<chartingToolkit:Chart.ChartAreaStyle>
-
-            </chartingToolkit:Chart.ChartAreaStyle>-->
             <chartingToolkit:Chart.Series >
                 <chartingToolkit:LineSeries Title="°C" ItemsSource="{Binding TemperatureData}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
             </chartingToolkit:Chart.Series>
+
+            <chartingToolkit:Chart.Axes>
+                <chartingToolkit:LinearAxis Orientation="Y" Minimum="30" Maximum="110" Title="Temperature °C" Width="60" Foreground="LightGreen" Interval="20" />
+            </chartingToolkit:Chart.Axes>
         </chartingToolkit:Chart>
 
-        <chartingToolkit:Chart Name="FrequencyChart"   Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0" Padding="0" PlotAreaStyle="{DynamicResource CoolPlotAreaStyle}" >
-
-            
+        <chartingToolkit:Chart Name="FrequencyChart"   Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0" Padding="0" PlotAreaStyle="{DynamicResource CoolPlotAreaStyle}"   >
             <chartingToolkit:Chart.LegendStyle>
                 <Style TargetType="visualisation:Legend">
                     <Setter Property="Margin" Value="0" />
@@ -197,8 +198,13 @@
 
             </chartingToolkit:Chart.ChartAreaStyle>-->
             <chartingToolkit:Chart.Series >
-                <chartingToolkit:LineSeries Title="Mhz" ItemsSource="{Binding CpuClockFrequency}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+                <chartingToolkit:LineSeries Title="Mhz" ItemsSource="{Binding CpuClockFrequency}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"   />
+
+
             </chartingToolkit:Chart.Series>
+            <chartingToolkit:Chart.Axes>
+                <chartingToolkit:LinearAxis Minimum="400000" Maximum="1600000" Title="Clock Speed" Orientation="Y"  Width="60" Foreground="LightGreen" />
+            </chartingToolkit:Chart.Axes>
         </chartingToolkit:Chart>
 
 

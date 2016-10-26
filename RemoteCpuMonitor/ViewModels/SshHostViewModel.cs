@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using Microsoft.Practices.ServiceLocation;
+using Prism.Events;
 using Prism.Mvvm;
 using RemoteCpuMonitor.Events;
 using RemoteCpuMonitor.Models;
@@ -22,12 +23,14 @@ namespace RemoteCpuMonitor.ViewModels
         private HostConfigElement _config;
         private IEventAggregator _eventAggregator;
         private List<CpuTempMonitorMessage> _statistics;
-        private SshSudoSession _sudoSession;
+        private ISshSudoSession _sudoSession;
+        private IServiceLocator _serviceLocator;
 
-        public SshHostViewModel(IEventAggregator eventAggregator)
+        public SshHostViewModel(IEventAggregator eventAggregator, IServiceLocator serviceLocator, ISshSudoSession sshSudoSession)
         {
+            this._serviceLocator = serviceLocator;
             this._eventAggregator = eventAggregator;
-            this._sudoSession = new SshSudoSession(eventAggregator);
+            this._sudoSession = sshSudoSession;
             this.registerEvents();
 
             this._eventAggregator = eventAggregator;
@@ -164,15 +167,15 @@ namespace RemoteCpuMonitor.ViewModels
 
         private void OnShutdownNotificationMessage(MasterNotification message)
         {
-            //if (message != null)
-            //{
-            //    if (this._sudoHelper != null)
-            //    {
-            //        var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
-            //        this._sudoHelper.StopSession();
-            //        this._sudoHelper.StartSession(connectiondata, "sudo shutdown now");
-            //    }
-            //}
+            if (message != null)
+            {
+                // mit await runsession async implementieren:
+                //using(ISshSudoSession session = this._serviceLocator.GetInstance<ISshSudoSession>())
+                //{
+                //    var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
+                //    session.RunSession(connectiondata, "sudo shutdown now", () => { });
+                //}
+            }
         }
 
         private void OnDisconnectNotificationMessage(MasterNotification message)
@@ -197,7 +200,7 @@ namespace RemoteCpuMonitor.ViewModels
                 if (this._sudoSession != null)
                 {
                     var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
-                    this._sudoSession.RunSession(connectiondata, "sudo coretempmon");
+                    this._sudoSession.RunSession(connectiondata, "sudo coretempmon -d 2000");
                 }
             }
         }

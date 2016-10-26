@@ -30,6 +30,7 @@ namespace RemoteCpuMonitor
         {
             base.ConfigureContainer();
             Container.RegisterInstance<ICpuMonitorConfigSection>(CpuMonitorConfigSection.Create());
+            Container.RegisterType<ISshSudoSession, SshSudoSession>();
 
         }
     }
