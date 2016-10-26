@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 using RemoteCpuMonitor.Events;
 using RemoteCpuMonitor.Models;
@@ -51,6 +52,9 @@ namespace RemoteCpuMonitor.ViewModels
             ConfigureCommand = new DelegateCommand(onConfigureClicked);
             ConnectCommand = new DelegateCommand(OnConnectCommandClicked);
             BenchmarkCommand = new DelegateCommand(OnBenchmarkClicked);
+
+            // InteractionRequests
+            GetServerConnectionRequest = new InteractionRequest<ServerConnectionNotification>();
         }
 
         private void registerEvents()
@@ -72,7 +76,17 @@ namespace RemoteCpuMonitor.ViewModels
 
         private void onConfigureClicked()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Clicked on Configure");
+            ServerConnectionNotification notification = new ServerConnectionNotification();
+            notification.Title = "Configure Connection";
+            notification.ConnectionData = new ConnectionData() { Hostname = this.Hostname, UserName = this.UserName, Password = this.Password, PortNumber = this.Port };
+
+            this.GetServerConnectionRequest.Raise(notification, returned => {
+                if (returned.Confirmed)
+                {
+                    Console.WriteLine("Connection data confirmed!");
+                }
+            });
         }
         #endregion
 
@@ -442,6 +456,9 @@ namespace RemoteCpuMonitor.ViewModels
         public DelegateCommand ConfigureCommand { get; private set; }
         public DelegateCommand ConnectCommand { get; private set; }
         public DelegateCommand BenchmarkCommand { get; private set; }
+        #endregion
+        #region InteractionRequests
+        public InteractionRequest<ServerConnectionNotification> GetServerConnectionRequest { get; private set; }
         #endregion
 
         #region IDisposable Support
