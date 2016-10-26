@@ -101,18 +101,23 @@ namespace RemoteCpuMonitor.ViewModels
                 {
                     case SshClientStatusMessageType.Connecting:
                         Console.WriteLine("xxx Connecting");
+                        this.OnlineStatus = message.MessageType;
                         break;
                     case SshClientStatusMessageType.Connected:
                         Console.WriteLine("xxx connected!");
+                        this.OnlineStatus = message.MessageType;
                         break;
                     case SshClientStatusMessageType.Disconnecting:
                         Console.WriteLine("xxx disconnecting!");
+                        this.OnlineStatus = message.MessageType;
                         break;
                     case SshClientStatusMessageType.Disconnected:
                         Console.WriteLine("xxx disconnected!");
+                        this.OnlineStatus = message.MessageType;
                         break;
                     case SshClientStatusMessageType.ConnectionError:
                         Console.WriteLine(string.Format("xxx Connectionerror: {0}", message.MessageText));
+                        this.OnlineStatus = message.MessageType;
                         break;
                     default:
                         break;
