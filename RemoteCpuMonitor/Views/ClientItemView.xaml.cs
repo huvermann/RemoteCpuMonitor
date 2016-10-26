@@ -23,6 +23,16 @@ namespace RemoteCpuMonitor.Views
         public ClientItemView()
         {
             InitializeComponent();
+            Dispatcher.ShutdownStarted += OnDispatcherShutDownStarted;
+        }
+
+        private void OnDispatcherShutDownStarted(object sender, EventArgs e)
+        {
+            var disposable = DataContext as IDisposable;
+            if (!ReferenceEquals(null, disposable))
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

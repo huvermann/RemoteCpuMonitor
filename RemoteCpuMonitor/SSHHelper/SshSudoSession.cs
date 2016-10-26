@@ -115,6 +115,13 @@ namespace RemoteCpuMonitor.SSHHelper
                     }
 
                 }
+                catch (ThreadAbortException e)
+                {
+                    this._terminateThread = true;
+                    this._isSessionRunning = false;
+                    this._eventaggregator.GetEvent<SshClientStatusMessageEvent>().Publish(new SshClientStatusMessage() { Sender = this, MessageType = SshClientStatusMessageType.Disconnected });
+                    Thread.ResetAbort();
+                }
                 catch (Exception e)
                 {
                     this._terminateThread = true;
@@ -159,9 +166,15 @@ namespace RemoteCpuMonitor.SSHHelper
                 {
                     Thread.Sleep(1);
                     // Todo: implement
+                    //this._terminateThread = true;
+                    //Thread.Sleep(1);
+                    //this._sessionThread.Join();
+                    //this._isSessionRunning = false;
+
                     this._terminateThread = true;
-                    Thread.Sleep(1);
-                    this._sessionThread.Join();
+
+                    this._sessionThread.Abort();
+                    this._sessionThread = null;
                     this._isSessionRunning = false;
                 }
             }

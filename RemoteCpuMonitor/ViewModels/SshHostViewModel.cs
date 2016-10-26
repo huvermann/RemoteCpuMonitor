@@ -243,6 +243,10 @@ namespace RemoteCpuMonitor.ViewModels
 
             if (message != null)
             {
+                if (_sudoSession == null)
+                {
+                    _sudoSession= this._serviceLocator.TryResolve<ISshSudoSession>();
+                }
                 if (this._sudoSession != null)
                 {
                     var connectiondata = new ConnectionData() { Hostname = this._hostname, UserName = this._userName, Password = this._password, PortNumber = this._port };
