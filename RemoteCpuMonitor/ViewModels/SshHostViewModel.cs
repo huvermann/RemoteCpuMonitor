@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.ServiceLocation;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using RemoteCpuMonitor.Events;
@@ -45,6 +46,11 @@ namespace RemoteCpuMonitor.ViewModels
 
             // Todo: implement reporting
             this._statistics = new List<CpuTempMonitorMessage>();
+
+            // Commands
+            ConfigureCommand = new DelegateCommand(onConfigureClicked);
+            ConnectCommand = new DelegateCommand(OnConnectCommandClicked);
+            BenchmarkCommand = new DelegateCommand(OnBenchmarkClicked);
         }
 
         private void registerEvents()
@@ -52,6 +58,25 @@ namespace RemoteCpuMonitor.ViewModels
             this._eventAggregator.GetEvent<SshClientStatusMessageEvent>().Subscribe(onSshStatusMessage);
             this._sudoSession.AddMatching(new Regex(@"(\d{2}:\d{2}:\d{2})\s+(\d+[,.]\d+)[^\d]+(\d+)\sMHz\s(\d+[,.]\d{2})\s(\d+[.,]\d{2})\s(\d+[.,]\d{2})\s(\d+[.,]\d{2})"), onStatusMonitorMatch);
         }
+
+        #region CommandHandlers
+        private void OnBenchmarkClicked()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnConnectCommandClicked()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void onConfigureClicked()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        
 
         #region SshStatusNotifications
         private void onStatusMonitorMatch(Match match)
@@ -410,6 +435,13 @@ namespace RemoteCpuMonitor.ViewModels
             set { SetProperty(ref _cpuClockFrequency, value); }
         }
 
+
+
+        #endregion
+        #region Commands
+        public DelegateCommand ConfigureCommand { get; private set; }
+        public DelegateCommand ConnectCommand { get; private set; }
+        public DelegateCommand BenchmarkCommand { get; private set; }
         #endregion
 
         #region IDisposable Support

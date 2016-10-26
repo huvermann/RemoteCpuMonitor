@@ -117,6 +117,8 @@
     <Compile Include="Configuration\CpuMonitorConfigSection.cs" />
     <Compile Include="Configuration\ICpuMonitorConfigSection.cs" />
     <Compile Include="Configuration\PasswordEncrypter.cs" />
+    <Compile Include="Converter\ConnectionButtonStatusConverter.cs" />
+    <Compile Include="Converter\DisableWhileOnlineTransitionConverter.cs" />
     <Compile Include="Converter\FrequencyStringConverter.cs" />
     <Compile Include="Converter\OnlineStatusStringConverter.cs" />
     <Compile Include="Converter\PercentageStringConverter.cs" />
