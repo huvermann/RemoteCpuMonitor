@@ -123,7 +123,6 @@
     <Compile Include="Converter\TemperatureStringConverter.cs" />
     <Compile Include="DesignTimeViewModels\MonitorListViewModel.cs" />
     <Compile Include="DesignTimeViewModels\SshCommandExecutionViewModel.cs" />
-    <Compile Include="Events\ArmbianMontorMessageEvent.cs" />
     <Compile Include="Events\CpuTempMonitorMessageEvent.cs" />
     <Compile Include="Events\MasterNotificationMessageEvent.cs" />
     <Compile Include="Events\SshClientStatusMessageEvent.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Models\ObservableHostList.cs" />
     <Compile Include="Notifications\ConnectionData.cs" />
     <Compile Include="Notifications\ServerConnectionNotification.cs" />
-    <Compile Include="SSHHelper\ArmbianMonitorResult.cs" />
     <Compile Include="SSHHelper\CpuTempMonitorMessage.cs" />
     <Compile Include="SSHHelper\ISshSudoSession.cs" />
     <Compile Include="SSHHelper\SshResponse.cs" />
