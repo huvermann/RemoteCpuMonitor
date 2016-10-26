@@ -87,6 +87,8 @@ namespace RemoteCpuMonitor.ViewModels
                 this.Freq3 = message.CpuSpeed;
                 this.Freq4 = message.CpuSpeed;
                 this.Temperature = message.Temperature;
+                this.TemperatureMinimum = message.Temperature;
+                this.TemperatureMaximum = message.Temperature;
             });
 
         }
@@ -228,6 +230,9 @@ namespace RemoteCpuMonitor.ViewModels
             _cpuLoad3 = 0;
             _cpuLoad4 = 0;
             _temperature = 0;
+            _temperatureMaximum = 0;
+            _temperatureMaximum = 100;
+            _onlineStatus = SshClientStatusMessageType.Disconnected;
 
         }
         #region ConfigurationData
@@ -326,6 +331,39 @@ namespace RemoteCpuMonitor.ViewModels
         {
             get { return _temperature; }
             set { SetProperty(ref _temperature, value); }
+        }
+
+        private double _temperatureMinimum;
+        public double TemperatureMinimum
+        {
+            get { return _temperatureMinimum; }
+            set
+            {
+                if (_temperatureMinimum > value)
+                {
+                    SetProperty(ref _temperatureMinimum, value);
+                }
+            }
+        }
+
+        private double _temperatureMaximum;
+        public double TemperatureMaximum
+        {
+            get { return _temperatureMaximum; }
+            set
+            {
+                if (_temperatureMaximum < value)
+                {
+                    SetProperty(ref _temperatureMaximum, value);
+                }
+            }
+        }
+
+        private SshClientStatusMessageType _onlineStatus;
+        public SshClientStatusMessageType OnlineStatus
+        {
+            get { return _onlineStatus; }
+            set { SetProperty(ref _onlineStatus, value); }
         }
 
         private ObservableCollection<HeatingChartData> _cpu1LoadEntries;
