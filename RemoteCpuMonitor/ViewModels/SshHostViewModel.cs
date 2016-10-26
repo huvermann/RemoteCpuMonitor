@@ -260,8 +260,8 @@ namespace RemoteCpuMonitor.ViewModels
             _cpuLoad3 = 0;
             _cpuLoad4 = 0;
             _temperature = 0;
-            _temperatureMaximum = 0;
-            _temperatureMaximum = 100;
+            _temperatureMaximum = null;
+            _temperatureMinimum = null;
             _onlineStatus = SshClientStatusMessageType.Disconnected;
 
         }
@@ -363,26 +363,26 @@ namespace RemoteCpuMonitor.ViewModels
             set { SetProperty(ref _temperature, value); }
         }
 
-        private double _temperatureMinimum;
-        public double TemperatureMinimum
+        private double? _temperatureMinimum;
+        public double? TemperatureMinimum
         {
             get { return _temperatureMinimum; }
             set
             {
-                if (_temperatureMinimum > value)
+                if (_temperatureMinimum > value || _temperatureMinimum == null)
                 {
                     SetProperty(ref _temperatureMinimum, value);
                 }
             }
         }
 
-        private double _temperatureMaximum;
-        public double TemperatureMaximum
+        private double? _temperatureMaximum;
+        public double? TemperatureMaximum
         {
             get { return _temperatureMaximum; }
             set
             {
-                if (_temperatureMaximum < value)
+                if (_temperatureMaximum < value || _temperatureMaximum == null)
                 {
                     SetProperty(ref _temperatureMaximum, value);
                 }

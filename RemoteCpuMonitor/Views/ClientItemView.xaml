@@ -18,6 +18,7 @@
         <converter:TemperatureStringConverter x:Key="TemperatureStringConverter" />
         <converter:ConnectionButtonStatusConverter x:Key="ConnectionButtonStatusConverter" />
         <converter:DisableWhileOnlineTransitionConverter x:Key="DisableWhileOnlineTransitionConverter" />
+        <converter:TempMinMaxStringConverter x:Key="TempMinMaxStringConverter" />
         <Style x:Key="HeaderStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="Foreground" Value="BlueViolet" />
@@ -114,10 +115,10 @@
             <TextBlock Text="Temp:" Grid.Row="5" />
             <TextBlock Text="{Binding Temperature, Converter={StaticResource TemperatureStringConverter}}" Grid.Row="5" Grid.Column="1" />
             <TextBlock Text="Min.Temp" Grid.Row="6" Grid.ColumnSpan="2"/>
-            <TextBlock Text="{Binding TemperatureMinimum, Converter={StaticResource TemperatureStringConverter}}" Grid.Row="6" Grid.Column="2"/>
+            <TextBlock Text="{Binding TemperatureMinimum, Converter={StaticResource TempMinMaxStringConverter}}" Grid.Row="6" Grid.Column="2"/>
 
             <TextBlock Text="Max.Temp" Grid.Row="7" Grid.ColumnSpan="2"/>
-            <TextBlock Text="{Binding TemperatureMaximum, Converter={StaticResource TemperatureStringConverter}}" Grid.Row="7" Grid.Column="2"/>
+            <TextBlock Text="{Binding TemperatureMaximum, Converter={StaticResource TempMinMaxStringConverter}}" Grid.Row="7" Grid.Column="2"/>
 
             <TextBlock Text="Status:" Grid.Row="8" Grid.ColumnSpan="2"/>
             <TextBlock Text="{Binding OnlineStatus}" Grid.Row="8" Grid.Column="1"/>

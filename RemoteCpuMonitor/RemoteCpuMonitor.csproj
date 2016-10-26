@@ -123,6 +123,7 @@
     <Compile Include="Converter\OnlineStatusStringConverter.cs" />
     <Compile Include="Converter\PercentageStringConverter.cs" />
     <Compile Include="Converter\TemperatureStringConverter.cs" />
+    <Compile Include="Converter\TempMinMaxStringConverter.cs" />
     <Compile Include="DesignTimeViewModels\MonitorListViewModel.cs" />
     <Compile Include="DesignTimeViewModels\SshCommandExecutionViewModel.cs" />
     <Compile Include="Events\CpuTempMonitorMessageEvent.cs" />
