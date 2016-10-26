@@ -8,6 +8,9 @@
              xmlns:toolkit="clr-namespace:Toolkit.WPF.Controls;assembly=Toolkit.WPF"
              xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:visualisation="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:views="clr-namespace:RemoteCpuMonitor.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
               d:DesignHeight="600" d:DesignWidth="800"
              mc:Ignorable="d" 
             
@@ -67,6 +70,17 @@
             <Setter Property="Orientation" Value="Y" />
         </Style>
     </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding GetServerConnectionRequest, Mode=OneWay}">
+            <prism:PopupWindowAction>
+                <prism:PopupWindowAction.WindowContent>
+                    <views:SshAuthenticationView/>
+                </prism:PopupWindowAction.WindowContent>
+            </prism:PopupWindowAction>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+    
     <Grid Margin="3">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
