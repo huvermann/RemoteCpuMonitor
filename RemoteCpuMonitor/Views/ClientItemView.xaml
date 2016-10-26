@@ -26,6 +26,12 @@
 
         <Style x:Key="ChartLineStyle" TargetType="{x:Type chartingToolkit:LineDataPoint}">
             <Setter Property="Background" Value="Red" />
+            <Setter Property="Opacity" Value="0" />
+        </Style>
+
+        <Style x:Key="CpuClockChartLineStyle" TargetType="{x:Type chartingToolkit:LineDataPoint}">
+            <Setter Property="Background" Value="LightGreen" />
+            <Setter Property="Opacity" Value="0" />
         </Style>
 
         <Style TargetType="TextBlock">
@@ -187,7 +193,7 @@
 
             </chartingToolkit:Chart.TitleStyle>
             <chartingToolkit:Chart.Series >
-                <chartingToolkit:LineSeries Title="°C" ItemsSource="{Binding TemperatureData}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  />
+                <chartingToolkit:LineSeries Title="°C" ItemsSource="{Binding TemperatureData}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}" DataPointStyle="{DynamicResource ChartLineStyle}"  />
             </chartingToolkit:Chart.Series>
 
             <chartingToolkit:Chart.Axes>
@@ -214,12 +220,12 @@
 
             </chartingToolkit:Chart.ChartAreaStyle>-->
             <chartingToolkit:Chart.Series >
-                <chartingToolkit:LineSeries Title="Mhz" ItemsSource="{Binding CpuClockFrequency}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"   />
+                <chartingToolkit:LineSeries Title="Ghz" ItemsSource="{Binding CpuClockFrequency}" IndependentValueBinding="{Binding Time}" DependentValueBinding="{Binding Value}"  DataPointStyle="{DynamicResource CpuClockChartLineStyle}" />
 
 
             </chartingToolkit:Chart.Series>
             <chartingToolkit:Chart.Axes>
-                <chartingToolkit:LinearAxis Minimum="400000" Maximum="1600000" Title="Clock Speed" Orientation="Y"  Width="80" Foreground="LightGreen" />
+                <chartingToolkit:LinearAxis Minimum="0" Maximum="2" Title="Clock Speed" Orientation="Y"  Width="80" Foreground="LightGreen" />
             </chartingToolkit:Chart.Axes>
         </chartingToolkit:Chart>
 

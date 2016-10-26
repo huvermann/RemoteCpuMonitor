@@ -101,7 +101,7 @@ namespace RemoteCpuMonitor.ViewModels
                 this._cpu2LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad2 });
                 this._cpu3LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad3 });
                 this._cpu4LoadEntries.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuLoad4 });
-                this._cpuClockFrequency.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuSpeed });
+                this._cpuClockFrequency.Add(new HeatingChartData() { Time = message.Time, Value = message.CpuSpeed / 1000000 });
 
                 this.CpuLoad1 = message.CpuLoad1;
                 this.CpuLoad2 = message.CpuLoad2;
@@ -307,26 +307,26 @@ namespace RemoteCpuMonitor.ViewModels
             set { SetProperty(ref _headerText, value); }
         }
 
-        private int _freq1;
-        public int Freq1
+        private double _freq1;
+        public double Freq1
         {
             get { return _freq1; }
             set { SetProperty(ref _freq1, value); }
         }
-        private int _freq2;
-        public int Freq2
+        private double _freq2;
+        public double Freq2
         {
             get { return _freq2; }
             set { SetProperty(ref _freq2, value); }
         }
-        private int _freq3;
-        public int Freq3
+        private double _freq3;
+        public double Freq3
         {
             get { return _freq3; }
             set { SetProperty(ref _freq3, value); }
         }
-        private int _freq4;
-        public int Freq4
+        private double _freq4;
+        public double Freq4
         {
             get { return _freq4; }
             set { SetProperty(ref _freq4, value); }

@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RemoteCpuMonitor")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Remote Cpu temperature and speed of embedded linux systems")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("RemoteCpuMonitor")]

@@ -12,7 +12,7 @@ namespace RemoteCpuMonitor.SSHHelper
     {
         public DateTime Time { get; set; }
         public double Temperature { get; set; }
-        public int CpuSpeed { get; set; }
+        public double CpuSpeed { get; set; }
         public double CpuLoad1 { get; set; }
         public double CpuLoad2 { get; set; }
         public double CpuLoad3 { get; set; }
@@ -29,7 +29,7 @@ namespace RemoteCpuMonitor.SSHHelper
                 result = new CpuTempMonitorMessage();
                 result.Time = DateTime.ParseExact(match[0].Groups[1].Value, "HH:mm:ss", CultureInfo.InvariantCulture);
                 result.Temperature = double.Parse(match[0].Groups[2].Value, CultureInfo.InvariantCulture);
-                result.CpuSpeed = int.Parse(match[0].Groups[3].Value, CultureInfo.InvariantCulture);
+                result.CpuSpeed = double.Parse(match[0].Groups[3].Value, CultureInfo.InvariantCulture);
                 result.CpuLoad1 = double.Parse(match[0].Groups[4].Value, CultureInfo.InvariantCulture);
                 result.CpuLoad2 = double.Parse(match[0].Groups[5].Value, CultureInfo.InvariantCulture);
                 result.CpuLoad3 = double.Parse(match[0].Groups[6].Value, CultureInfo.InvariantCulture);
@@ -47,7 +47,7 @@ namespace RemoteCpuMonitor.SSHHelper
                 result = new CpuTempMonitorMessage();
                 result.Time = DateTime.ParseExact(match.Groups[1].Value, "HH:mm:ss", CultureInfo.InvariantCulture);
                 result.Temperature = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
-                result.CpuSpeed = int.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+                result.CpuSpeed = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
                 result.CpuLoad1 = double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture);
                 result.CpuLoad2 = double.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture);
                 result.CpuLoad3 = double.Parse(match.Groups[6].Value, CultureInfo.InvariantCulture);

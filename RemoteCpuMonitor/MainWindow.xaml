@@ -7,6 +7,7 @@
         xmlns:views="clr-namespace:RemoteCpuMonitor.Views"
         xmlns:local="clr-namespace:RemoteCpuMonitor"
         mc:Ignorable="d"
+        Icon="./Resources/Icons/Actions-system-search-icon.png.ico"
         Title="MainWindow" Height="960" Width="750" Background="BurlyWood">
     <Grid>
         <views:MonitorListView  />
